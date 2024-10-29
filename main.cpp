@@ -12,8 +12,9 @@
 
 using namespace std;
 
-const int displayWidth = 60;
-const int displayHeight = 20;
+// Establecer el tamano del display
+const int displayWidth = 60; ///Ancho
+const int displayHeight = 20; ///Alto
 
 // Estructura de casilla dentro del arrelo:
 // Los primeros cuatro caracteres van a ser los que se imprimiran a consola
@@ -45,24 +46,31 @@ char Display[displayHeight][displayWidth][4] = {
 {{'|',' ','+','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ',' ','-','-'},{' ','|','-','+'}}
 };
 
-char previousTileVisualState[4] = {' ',' ',' ',' '};
-char playerModel[4] = {'^','-','m',' '};
-int playerPositionX = 1, playerPositionY = 1;
 
+char previousTileVisualState[4] = {' ',' ',' ',' '}; /// Arreglo donde se guarda el estado de la casilla anterior
+char playerModel[4] = {'^','-','m',' '}; /// Arreglo del modelo del personaje
+int playerPositionX = 1, playerPositionY = 1; /// Se establece la posicion inicial del personaje
+
+// Se crea la funcion encargada de la actualiza el estado visual
 void updatePreviousTileVisualState() {
+    // Almacena el estado visual actual de la casilla donde está el jugador para poder restaurarlo después
     Display[playerPositionX][playerPositionY][0] = previousTileVisualState[0];
     Display[playerPositionX][playerPositionY][1] = previousTileVisualState[1];
     Display[playerPositionX][playerPositionY][2] = previousTileVisualState[2];
     Display[playerPositionX][playerPositionY][3] = previousTileVisualState[3];
 }
 
+// Funcion donde se captura lo ingresado por el usuario
 void input() {
-    char inputChar = _getch();
-
+    char inputChar = _getch();\
+    
+    // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d)
     switch(inputChar) {
     case 'w':
+        // Se manda a llamar la funcion para guardar la casilla
         updatePreviousTileVisualState();
 
+        // Se mueve de posicion al personaje
         playerPositionX--;
         break;
     case 'a':
@@ -84,45 +92,66 @@ void input() {
 
 }
 
+// Funcion que dibuja al personaje en donde debe de estar
 void updateScreen() {
+    // Se asignan las partes del modelo en su respectiva posicion de su casilla
     Display[playerPositionX][playerPositionY][0] = playerModel[0];
     Display[playerPositionX][playerPositionY][1] = playerModel[1];
     Display[playerPositionX][playerPositionY][2] = playerModel[2];
     Display[playerPositionX][playerPositionY][3] = playerModel[3];
 }
 
+// Funcion que desplegara la matriz completa (El display) 
 void displayScreen() {
+    // Ciclo que se encarga de imprimir cada elemento de la matriz
+
+    // Se itera en base a las filas de la matriz
     for (int i = 0; i < 20; i++) {
-        // First line: print the first two characters of each Display[i][j]
+        // Se itera en base a las columnas de la matriz
         for (int j = 0; j < 60; j++) {
+            // Se despliegan las dos primeros elementos de la casilla
             cout << Display[i][j][0] << Display[i][j][1];
+            // Casilla:
+            // [][] <- Fila que se imprime
+            // [][]
         }
+        // Salto de linea para pasar a los siguientes dos elementos de la casilla
         cout << endl;
 
-        // Second line: print the last two characters of each Display[i][j]
+        // Se repite el proceso con la fila de abajo
         for (int j = 0; j < 60; j++) {
+            // Se imprimen los primeros dos elementos de la casilla
             cout << Display[i][j][2] << Display[i][j][3];
+            // Casilla:
+            // [][] 
+            // [][] <- Fila que se imprime
         }
+        // Ultimo salto de linea
         cout << endl;
     }
 }
 
+// Empieza la funcion principal
 int main()
 {
-
+    // Se manda a llamar el despliegue de la pantalla
     displayScreen();
-    // Loop to display the array in the specified format
-
+    
+    // Ciclo infinito para el mantenimiento del juego
     while(true) {
+        // Funcion para capturar el imput
         input();
+        // Funcion donde se actualiza la pantalla
         updateScreen();
+        // Funcion que limpia la consola
         system("cls");
+        // Se vuelve a desplegar la pantalla
         displayScreen();
     }
 
     return 0;
 }
-
+// como se deberia ver mas o menos la pantalla
 // ┌-----------------------------------┐
 // |                                   |
 // |                                   |
