@@ -1,6 +1,7 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <string>
 
 // Alto del display: 40 characteres
 // Ancho del display: 120 characters
@@ -13,17 +14,23 @@
 using namespace std;
 
 // Establecer el tamano del display
-const int displayWidth = 60; ///Ancho
-const int displayHeight = 20; ///Alto
+const int anchoDeDisplay = 60; //Ancho
+const int altoDeDisplay = 20; //Alto
 
 // Estructura de casilla dentro del arrelo:
 // Los primeros cuatro caracteres van a ser los que se imprimiran a consola
 
 // Tipos de casillas:
-//
+// 'a' Casilla de inicio
+// 'b' Casilla vacia (pasto)
+// 'c'
 
 // Los primeros cuatro caracteres son la apariencia de la casilla, el quinto caracter es el tipo de la casilla, el sexto caracter determina si es pasable, el septimo caracter determina la informacion a mostrar cuando se interactua con ella,
+<<<<<<< Updated upstream
 unsigned char Display[displayHeight][displayWidth][4] = {
+=======
+unsigned char display[altoDeDisplay][anchoDeDisplay][4] = {
+>>>>>>> Stashed changes
 {{'+','-','|',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','-',' ',' '},{'-','+',' ','|'}},
 {{'|',' ','|',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ','|',' ','|'}},
 {{'|',' ','|',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ',' ',' ',' '},{' ','|',' ','|'}},
@@ -47,62 +54,73 @@ unsigned char Display[displayHeight][displayWidth][4] = {
 };
 
 
+<<<<<<< Updated upstream
 unsigned char previousTileVisualState[4] = {' ',' ',' ',' '}; /// Arreglo donde se guarda el estado de la casilla anterior
 unsigned char playerModel[4] = {'^','-','m',' '}; /// Arreglo del modelo del personaje
 int playerPositionX = 1, playerPositionY = 1; /// Se establece la posicion inicial del personaje
+=======
+char estadoPrevioDeCasilla[4] = {' ',' ',' ',' '}; // Arreglo donde se guarda el estado de la casilla anterior
+char modeloDeJugador[4] = {'^','-','m',' '}; // Arreglo del modelo del personaje
+int posicionJugadorX = 1, posicionJugadorY = 1; // Se establece la posicion inicial del personaje
+>>>>>>> Stashed changes
 
 // Se crea la funcion encargada de la actualiza el estado visual
-void updatePreviousTileVisualState() {
+void actualizarEstadoPrevioDeCasilla() {
     // Almacena el estado visual actual de la casilla donde está el jugador para poder restaurarlo después
-    Display[playerPositionX][playerPositionY][0] = previousTileVisualState[0];
-    Display[playerPositionX][playerPositionY][1] = previousTileVisualState[1];
-    Display[playerPositionX][playerPositionY][2] = previousTileVisualState[2];
-    Display[playerPositionX][playerPositionY][3] = previousTileVisualState[3];
+    display[posicionJugadorX][posicionJugadorY][0] = estadoPrevioDeCasilla[0];
+    display[posicionJugadorX][posicionJugadorY][1] = estadoPrevioDeCasilla[1];
+    display[posicionJugadorX][posicionJugadorY][2] = estadoPrevioDeCasilla[2];
+    display[posicionJugadorX][posicionJugadorY][3] = estadoPrevioDeCasilla[3];
 }
 
-// Funcion donde se captura lo ingresado por el usuario
+// Procedimiento donde se captura lo ingresado por el usuario
 void input() {
     unsigned char inputChar = _getch();\
-    
+
     // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d)
     switch(input) {
     case 'w':
         // Se manda a llamar la funcion para guardar la casilla
-        updatePreviousTileVisualState();
+        actualizarEstadoPrevioDeCasilla();
 
         // Se mueve de posicion al personaje
-        playerPositionX--;
+        posicionJugadorX--;
         break;
     case 'a':
-        updatePreviousTileVisualState();
+        actualizarEstadoPrevioDeCasilla();
 
-        playerPositionY--;
+        posicionJugadorY--;
         break;
     case 's':
-        updatePreviousTileVisualState();
+        actualizarEstadoPrevioDeCasilla();
 
-        playerPositionX++;
+        posicionJugadorX++;
         break;
     case 'd':
-        updatePreviousTileVisualState();
+        actualizarEstadoPrevioDeCasilla();
 
-        playerPositionY++;
+        posicionJugadorY++;
     }
 
 
 }
 
-// Funcion que dibuja al personaje en donde debe de estar
-void updateScreen() {
-    // Se asignan las partes del modelo en su respectiva posicion de su casilla
-    Display[playerPositionX][playerPositionY][0] = playerModel[0];
-    Display[playerPositionX][playerPositionY][1] = playerModel[1];
-    Display[playerPositionX][playerPositionY][2] = playerModel[2];
-    Display[playerPositionX][playerPositionY][3] = playerModel[3];
+// La linea de la "consola" del juego donde se imprimira el mensaje
+void imprimirMessage(int lineaDeConsola, string mensaje) {
+
 }
 
-// Funcion que desplegara la matriz completa (El display) 
-void displayScreen() {
+// Funcion que dibuja al personaje en donde debe de estar
+void actualizarDisplay() {
+    // Se asignan las partes del modelo en su respectiva posicion de su casilla
+    display[posicionJugadorX][posicionJugadorY][0] = modeloDeJugador[0];
+    display[posicionJugadorX][posicionJugadorY][1] = modeloDeJugador[1];
+    display[posicionJugadorX][posicionJugadorY][2] = modeloDeJugador[2];
+    display[posicionJugadorX][posicionJugadorY][3] = modeloDeJugador[3];
+}
+
+// Funcion que desplegara la matriz completa (El display)
+void imprimirDisplay() {
     // Ciclo que se encarga de imprimir cada elemento de la matriz
 
     // Se itera en base a las filas de la matriz
@@ -110,7 +128,7 @@ void displayScreen() {
         // Se itera en base a las columnas de la matriz
         for (int j = 0; j < 60; j++) {
             // Se despliegan las dos primeros elementos de la casilla
-            cout << Display[i][j][0] << Display[i][j][1];
+            cout << display[i][j][0] << display[i][j][1];
             // Casilla:
             // [][] <- Fila que se imprime
             // [][]
@@ -121,9 +139,9 @@ void displayScreen() {
         // Se repite el proceso con la fila de abajo
         for (int j = 0; j < 60; j++) {
             // Se imprimen los primeros dos elementos de la casilla
-            cout << Display[i][j][2] << Display[i][j][3];
+            cout << display[i][j][2] << display[i][j][3];
             // Casilla:
-            // [][] 
+            // [][]
             // [][] <- Fila que se imprime
         }
         // Ultimo salto de linea
@@ -135,18 +153,18 @@ void displayScreen() {
 int main()
 {
     // Se manda a llamar el despliegue de la pantalla
-    displayScreen();
-    
+    imprimirDisplay();
+
     // Ciclo infinito para el mantenimiento del juego
     while(true) {
         // Funcion para capturar el imput
         input();
         // Funcion donde se actualiza la pantalla
-        updateScreen();
+        actualizarDisplay();
         // Funcion que limpia la consola
         system("cls");
         // Se vuelve a desplegar la pantalla
-        displayScreen();
+        imprimirDisplay();
     }
 
     return 0;
