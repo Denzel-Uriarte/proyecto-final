@@ -66,10 +66,10 @@ void actualizarEstadoPrevioDeCasilla() {
 
 // Procedimiento donde se captura lo ingresado por el usuario
 void input() {
-    unsigned char inputChar = _getch();\
+    unsigned char inputChar = _getch();
 
     // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d)
-    switch(input) {
+    switch(inputChar) {
     case 'w':
         // Se manda a llamar la funcion para guardar la casilla
         actualizarEstadoPrevioDeCasilla();
