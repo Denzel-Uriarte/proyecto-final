@@ -115,12 +115,19 @@ void actualizarVisualJugador() {
     pantalla[posicionJugadorX][posicionJugadorY][3] = modeloDeJugador[3];
 }
 
+// Funcion para cambiar el color del texto.
 void colores(unsigned char color) {
+    // Se captura el HANDLE de salida de la consola standar usando la funcion GetStdHandle de Windows
     HANDLE handleSalida = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Condicional para decidir que color se usara en base al caracter n6 de la casilla
     if (color == 'a') {
+        // Se usa el HANDLE para decirle al programa en que consola aplicar el cambio
+        // El numero 6 corresponde al color amarillo
         SetConsoleTextAttribute(handleSalida, 6);
     }
     else if (color == 'b') {
+        // El numero 11 corresponde al color aguamarina
         SetConsoleTextAttribute(handleSalida, 11);
     }
 }
@@ -133,8 +140,9 @@ void imprimirPantalla() {
     for (int i = 0; i < 20; i++) {
         // Se itera en base a las columnas de la matriz
         for (int j = 0; j < 60; j++) {
-            // Se despliegan las dos primeros elementos de la casilla
+            // Se manda a llamar la funcion del color, cambiando el color a el establecido en el elemento con indice 5 de la casilla actual
             colores(pantalla[i][j][5]);
+            // Se despliegan las dos primeros elementos de la casilla
             cout << pantalla[i][j][0] << pantalla[i][j][1];
             // Casilla:
             // [][] <- Fila que se imprime
@@ -145,8 +153,9 @@ void imprimirPantalla() {
 
         // Se repite el proceso con la fila de abajo
         for (int j = 0; j < 60; j++) {
-            // Se imprimen los primeros dos elementos de la casilla
+            // Se manda a llamar la funcion del color, cambiando el color a el establecido en el elemento con indice 5 de la casilla actual
             colores(pantalla[i][j][5]);
+            // Se imprimen los primeros dos elementos de la casilla
             cout << pantalla[i][j][2] << pantalla[i][j][3];
             // Casilla:
             // [][]
