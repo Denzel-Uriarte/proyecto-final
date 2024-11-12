@@ -63,6 +63,14 @@ unsigned char estadoPrevioDeCasilla[4] = {' ',' ',' ',' '}; // Arreglo donde se 
 unsigned char modeloDeJugador[4] = {'^','-','m',' '}; // Arreglo del modelo del personaje
 int posicionJugadorX = 1, posicionJugadorY = 1; // Se establece la posicion inicial del personaje
 
+void capturarEstadoPrevioDeCasilla() {
+    // Almacena el estado visual actual de la casilla donde está el jugador
+    estadoPrevioDeCasilla[0] = pantalla[posicionJugadorX][posicionJugadorY][0];
+    estadoPrevioDeCasilla[1] = pantalla[posicionJugadorX][posicionJugadorY][1];
+    estadoPrevioDeCasilla[2] = pantalla[posicionJugadorX][posicionJugadorY][2];
+    estadoPrevioDeCasilla[3] = pantalla[posicionJugadorX][posicionJugadorY][3];
+}
+
 // Se crea la funcion encargada de la actualiza el estado visual
 void actualizarEstadoPrevioDeCasilla() {
     // Almacena el estado visual actual de la casilla donde está el jugador para poder restaurarlo después
@@ -169,36 +177,29 @@ void imprimirPantalla() {
 // Procedimiento donde se captura lo ingresado por el usuario
 void entradaUsuario() {
     char caracterIngresado = _getch();
-
+    // Se manda a llamar la funcion para guardar la casilla
+    actualizarEstadoPrevioDeCasilla();
+    
     // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d)
     switch(caracterIngresado) {
     case 'w':
         if (pantalla[posicionJugadorX-1][posicionJugadorY][4] == '1') {
-            // Se manda a llamar la funcion para guardar la casilla
-            actualizarEstadoPrevioDeCasilla();
-
             // Se mueve de posicion al personaje
             posicionJugadorX--;
         }
         break;
     case 'a':
         if (pantalla[posicionJugadorX][posicionJugadorY-1][4] == '1') {
-            actualizarEstadoPrevioDeCasilla();
-
             posicionJugadorY--;
         }
         break;
     case 's':
         if (pantalla[posicionJugadorX+1][posicionJugadorY][4] == '1') {
-            actualizarEstadoPrevioDeCasilla();
-
             posicionJugadorX++;
         }
         break;
     case 'd':
         if (pantalla[posicionJugadorX][posicionJugadorY+1][4] == '1') {
-            actualizarEstadoPrevioDeCasilla();
-
             posicionJugadorY++;
         }
         break;
@@ -219,6 +220,8 @@ void entradaUsuario() {
 // Empieza la funcion principal
 int main()
 {
+    // Funcion para guardar la casilla antes de reescribirla
+    capturarEstadoPrevioDeCasilla();
     actualizarVisualJugador();
     // Se manda a llamar el despliegue de la pantalla
     imprimirPantalla();
@@ -226,6 +229,8 @@ int main()
     while(true) {
         // Funcion para capturar el imput
         entradaUsuario();
+        // Funcion para guardar la casilla antes de reescribirla
+        capturarEstadoPrevioDeCasilla();
         // Funcion donde se actualiza la pantalla
         actualizarVisualJugador();
         // Funcion que limpia la consola
