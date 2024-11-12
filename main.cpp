@@ -14,8 +14,8 @@
 using namespace std;
 
 // Establecer el tamano del display
-const int anchoDeDisplay = 60; //Ancho
-const int altoDeDisplay = 20; //Alto
+const int anchoDePantalla = 60; //Ancho
+const int altoDePantalla = 20; //Alto
 
 // Estructura de casilla dentro del arrelo:
 // Los primeros cuatro caracteres van a ser los que se imprimiran a consola
@@ -29,9 +29,14 @@ const int altoDeDisplay = 20; //Alto
 // '0': no
 // '1': si
 
-// Los primeros cuatro caracteres son la apariencia de la casilla, el quinto caracter es el tipo de la casilla, el sexto caracter determina si es pasable, el septimo caracter determina la informacion a mostrar cuando se interactua con ella,
+// Los primeros cuatro caracteres son la apariencia de la casilla, el quinto caracter determina si es pasable, el sexto caracter determina el color de la casilla, el septimo caracter determina la informacion a mostrar cuando se interactua con ella,
 
-unsigned char display[altoDeDisplay][anchoDeDisplay][5] = {
+// {'+','-','|',' ','0'} se imprime como:
+// +-
+// |
+
+
+unsigned char pantalla[altoDePantalla][anchoDePantalla][5] = {
 {{'+','-','|',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','-',' ',' ','0'},{'-','+',' ','|','0'}},
 {{'|',' ','|',' ','0'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ','|',' ','|','0'}},
 {{'|',' ','|',' ','0'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ',' ',' ',' ','1'},{' ','|',' ','|','0'}},
@@ -62,50 +67,28 @@ int posicionJugadorX = 1, posicionJugadorY = 1; // Se establece la posicion inic
 // Se crea la funcion encargada de la actualiza el estado visual
 void actualizarEstadoPrevioDeCasilla() {
     // Almacena el estado visual actual de la casilla donde está el jugador para poder restaurarlo después
-    display[posicionJugadorX][posicionJugadorY][0] = estadoPrevioDeCasilla[0];
-    display[posicionJugadorX][posicionJugadorY][1] = estadoPrevioDeCasilla[1];
-    display[posicionJugadorX][posicionJugadorY][2] = estadoPrevioDeCasilla[2];
-    display[posicionJugadorX][posicionJugadorY][3] = estadoPrevioDeCasilla[3];
+    pantalla[posicionJugadorX][posicionJugadorY][0] = estadoPrevioDeCasilla[0];
+    pantalla[posicionJugadorX][posicionJugadorY][1] = estadoPrevioDeCasilla[1];
+    pantalla[posicionJugadorX][posicionJugadorY][2] = estadoPrevioDeCasilla[2];
+    pantalla[posicionJugadorX][posicionJugadorY][3] = estadoPrevioDeCasilla[3];
 }
 
 // La linea de la "consola" del juego donde se imprimira el mensaje
 void imprimirMensaje(int lineaDeConsola, string mensaje, bool limpiar) {
-    int longitudMensaje = mensaje.length();
-    int linea = 16 + (lineaDeConsola/2 - 1);
-    if (limpiar) {
-        // Clear the specified line
-        for (int i = 1; i < 50; i++) {
-            display[linea][i][0] = ' ';
-            display[linea][i][1] = ' ';
-        }
-    } else {
-        if (linea & 2 == 0) {
-            // Write the message to the specified line
-            for (int i = 0; i <= longitudMensaje/2; i++) { // Divide by 2 to avoid overflow
-                display[linea][i+3][0] = mensaje[i * 2];          // First character of the pair
-                display[linea][i+3][1] = mensaje[i * 2 + 1];      // Second character of the pair
-            }
-        } else {
-            for (int i = 0; i <= longitudMensaje/2; i++) { // Divide by 2 to avoid overflow
-                display[linea][i+1][0] = mensaje[i * 2];          // First character of the pair
-                display[linea][i+1][1] = mensaje[i * 2 + 1];      // Second character of the pair
-            }
-        }
 
-    }
 }
 
 // Funcion que dibuja al personaje en donde debe de estar
-void actualizarDisplay() {
+void actualizarVisualJugador() {
     // Se asignan las partes del modelo en su respectiva posicion de su casilla
-    display[posicionJugadorX][posicionJugadorY][0] = modeloDeJugador[0];
-    display[posicionJugadorX][posicionJugadorY][1] = modeloDeJugador[1];
-    display[posicionJugadorX][posicionJugadorY][2] = modeloDeJugador[2];
-    display[posicionJugadorX][posicionJugadorY][3] = modeloDeJugador[3];
+    pantalla[posicionJugadorX][posicionJugadorY][0] = modeloDeJugador[0];
+    pantalla[posicionJugadorX][posicionJugadorY][1] = modeloDeJugador[1];
+    pantalla[posicionJugadorX][posicionJugadorY][2] = modeloDeJugador[2];
+    pantalla[posicionJugadorX][posicionJugadorY][3] = modeloDeJugador[3];
 }
 
-// Funcion que desplegara la matriz completa (El display)
-void imprimirDisplay() {
+// Funcion que desplegara la matriz completa (El pantalla)
+void imprimirPantalla() {
     // Ciclo que se encarga de imprimir cada elemento de la matriz
 
     // Se itera en base a las filas de la matriz
@@ -113,7 +96,7 @@ void imprimirDisplay() {
         // Se itera en base a las columnas de la matriz
         for (int j = 0; j < 60; j++) {
             // Se despliegan las dos primeros elementos de la casilla
-            cout << display[i][j][0] << display[i][j][1];
+            cout << pantalla[i][j][0] << pantalla[i][j][1];
             // Casilla:
             // [][] <- Fila que se imprime
             // [][]
@@ -124,7 +107,7 @@ void imprimirDisplay() {
         // Se repite el proceso con la fila de abajo
         for (int j = 0; j < 60; j++) {
             // Se imprimen los primeros dos elementos de la casilla
-            cout << display[i][j][2] << display[i][j][3];
+            cout << pantalla[i][j][2] << pantalla[i][j][3];
             // Casilla:
             // [][]
             // [][] <- Fila que se imprime
@@ -135,13 +118,13 @@ void imprimirDisplay() {
 }
 
 // Procedimiento donde se captura lo ingresado por el usuario
-void input() {
-    unsigned char inputChar = _getch();
+void entradaUsuario() {
+    char caracterIngresado = _getch();
 
     // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d)
-    switch(inputChar) {
+    switch(caracterIngresado) {
     case 'w':
-        if (display[posicionJugadorX-1][posicionJugadorY][4] == '1') {
+        if (pantalla[posicionJugadorX-1][posicionJugadorY][4] == '1') {
             // Se manda a llamar la funcion para guardar la casilla
             actualizarEstadoPrevioDeCasilla();
 
@@ -150,21 +133,21 @@ void input() {
         }
         break;
     case 'a':
-        if (display[posicionJugadorX][posicionJugadorY-1][4] == '1') {
+        if (pantalla[posicionJugadorX][posicionJugadorY-1][4] == '1') {
             actualizarEstadoPrevioDeCasilla();
 
             posicionJugadorY--;
         }
         break;
     case 's':
-        if (display[posicionJugadorX+1][posicionJugadorY][4] == '1') {
+        if (pantalla[posicionJugadorX+1][posicionJugadorY][4] == '1') {
             actualizarEstadoPrevioDeCasilla();
 
             posicionJugadorX++;
         }
         break;
     case 'd':
-        if (display[posicionJugadorX][posicionJugadorY+1][4] == '1') {
+        if (pantalla[posicionJugadorX][posicionJugadorY+1][4] == '1') {
             actualizarEstadoPrevioDeCasilla();
 
             posicionJugadorY++;
@@ -187,19 +170,19 @@ void input() {
 // Empieza la funcion principal
 int main()
 {
-    actualizarDisplay();
+    actualizarVisualJugador();
     // Se manda a llamar el despliegue de la pantalla
-    imprimirDisplay();
+    imprimirPantalla();
     // Ciclo infinito para el mantenimiento del juego
     while(true) {
         // Funcion para capturar el imput
-        input();
+        entradaUsuario();
         // Funcion donde se actualiza la pantalla
-        actualizarDisplay();
+        actualizarVisualJugador();
         // Funcion que limpia la consola
         system("cls");
         // Se vuelve a desplegar la pantalla
-        imprimirDisplay();
+        imprimirPantalla();
     }
 
     return 0;

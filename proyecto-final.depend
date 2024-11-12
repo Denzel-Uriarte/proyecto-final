@@ -1,7 +1,6 @@
 # depslib dependency file v1.0
-1730306096 source:c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\main.cpp
+1731374306 source:c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\main.cpp
 	<iostream>
 	<windows.h>
 	<conio.h>
-	<string>
 
