@@ -165,6 +165,26 @@ void actualizarVisualJugador() {
     pantalla[posicionJugadorX][posicionJugadorY][5] = modeloDeJugador[4];
 }
 
+
+void cambiarFuente(const wchar_t* fuente) {
+    // Obtener el manejador de salida de la consola estándar
+    HANDLE handleSalida = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Crear una estructura para configurar la fuente
+    CONSOLE_FONT_INFOEX cfi{};
+    cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+
+    // Obtener la configuración actual de la fuente (sin punteros explícitos)
+    GetCurrentConsoleFontEx(handleSalida, false, cfi);
+
+    // Configurar la nueva fuente
+    wcscpy_s(cfi.FaceName, fuente);
+
+    // Aplicar la nueva configuración
+    SetCurrentConsoleFontEx(handleSalida, false, cfi);
+}
+
+
 // Funcion para cambiar el color del texto.
 void colores(unsigned char color) {
     // Se captura el HANDLE de salida de la consola standar usando la funcion GetStdHandle de Windows
@@ -335,6 +355,7 @@ void imprimirHistoria(int etapaDeHistoria) {
 // Empieza la funcion principal
 int main()
 {
+    cambiarFuente(L"Cascadia Code");
     int etapaDeHistoria = 0;
     // Funcion para guardar el visual de la casilla antes de reescribirla
     capturarEstadoPrevioDeCasilla();
