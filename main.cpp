@@ -2,6 +2,11 @@
 #include <windows.h>
 #include <conio.h>
 #include <string>
+#include <cstdlib>
+
+
+
+
 // #include "mensajes.hpp"
 
 // Alto del display: 40 characteres
@@ -17,6 +22,8 @@ using namespace std;
 // Establecer el tamano del display
 const int anchoDePantalla = 60; //Ancho
 const int altoDePantalla = 20; //Alto
+int monedas = 0;
+int actoActual = 1;
 
 // Estructura de casilla dentro del arrelo:
 // Los primeros cuatro caracteres van a ser los que se imprimiran a consola
@@ -30,7 +37,6 @@ const int altoDePantalla = 20; //Alto
 // '0': no
 // '1': si
 
-// Los primeros cuatro caracteres son la apariencia de la casilla, el quinto caracter determina si es pasable, el sexto caracter determina el color de la casilla, el septimo caracter determina la informacion a mostrar cuando se interactua con ella,
 
 // {'+','-','|',' ','0'} se imprime como:
 // +-
@@ -57,17 +63,88 @@ string textos[20] = {
     "Usa las teclas W A S D para moverte."                                                                  // 15
 };
 
+string pasajesDeLibros[60] = {
+    "El corazon de una ballena azul pesa tanto como un coche pequeno y puede bombear casi 60galones de sangre por latido.",
+    "Los pulpos tienen tres corazones, y dos de ellos dejan de latir cuando el animal esta nadando para ahorrar energia.",
+    "Los koalas tienen huellas dactilares tan parecidas a las humanas que podrian confundir a los cientificos en una escena del crimen.",
+    "Las libelulas son unos de los cazadores mas eficientes del reino animal, con una tasa de exito del 95% al atrapar presas.",
+    "Los ajolotes, anfibios mexicanos, tienen la capacidad unica de regenerar sus extremidades, corazon, espina dorsal y cerebro.",
+    "El Monte Everest crece unos 4 milimetros al ano debido a la colision constante de las placas tectonicas bajo Asia y el Himalaya.",
+    "Los flamencos adquieren su caracteristico color rosado gracias a la dieta rica en carotenoides, que se encuentra en su comida.",
+    "Las estrellas de mar no tienen cerebro ni sangre; usan un sistema hidraulico para moverse y su agua actua como su 'sangre'.",
+    "Una cucharada de miel representa el trabajo de toda una vida para unas 12 abejas; cada una produce una gota en su existencia.",
+    "Las medusas Turritopsis dohrnii son conocidas como 'inmortales' porque pueden regenerarse y revertir a un estado juvenil.",
+    "En 2006, Pluton fue degradado de planeta a planeta enano por no haber 'limpiado su vecindad' en la orbita solar.",
+    "Los delfines tienen nombres unicos en forma de silbidos, que usan para identificarse entre si en sus grupos sociales.",
+    "Los volcanes submarinos generan mas del 75% de toda la actividad volcanica de la Tierra, pero pasan desapercibidos.",
+    "Los camaleones no solo cambian de color para camuflarse, tambien lo hacen para comunicarse y regular su temperatura.",
+    "Los arboles mas antiguos del mundo, los pinos bristlecone, pueden vivir mas de 5,000 anos y se encuentran en EE.UU.",
+    "El Sol representa el 99.86% de toda la masa del sistema solar, dejando menos del 0.2% para planetas, lunas y asteroides.",
+    "Las hormigas pueden levantar hasta 50 veces su peso corporal gracias a su pequeno tamano y la fisica de sus musculos.",
+    "El cerebro humano consume aproximadamente el 20% de la energia total del cuerpo, a pesar de representar solo el 2%.",
+    "Los gatos tienen 32 musculos en cada oreja, lo que les permite girarlas independientemente para localizar sonidos.",
+    "Las avispas japonesas gigantes pueden llegar a medir 6 cm y tienen un veneno tan potente que disuelve tejidos humanos.",
+    "La Antartida contiene el 70% del agua dulce de la Tierra, atrapada en su hielo, pero es el continente mas seco del mundo.",
+    "Las nutrias marinas se envuelven en algas mientras duermen para no separarse de su grupo debido a las corrientes.",
+    "Los tiburones han existido en la Tierra por mas de 400 millones de anos, mucho antes que los dinosaurios y los arboles.",
+    "Los ojos de los calamares gigantes tienen el tamano de un balon de futbol, lo que les permite ver en la oscuridad marina.",
+    "Los canguros no pueden caminar hacia atras debido a la estructura unica de sus patas y la cola que les sirve de equilibrio.",
+    "El colibri es el unico pajaro capaz de volar hacia atras, y su corazon puede latir hasta 1,260 veces por minuto.",
+    "El Gran Canon en Arizona, EE.UU., tiene aproximadamente 6 millones de anos, pero las rocas en su base tienen 2 mil millones.",
+    "Las cebras tienen rayas unicas como las huellas digitales humanas, y las usan para confundir a los depredadores.",
+    "Los pandas gigantes pasan mas de 12 horas al dia comiendo bambu, que constituye el 99% de su dieta habitual.",
+    "En 1961, Yuri Gagarin se convirtio en el primer humano en viajar al espacio, completando una orbita alrededor de la Tierra.",
+    "La Estatua de la Libertad fue originalmente un regalo de Francia para conmemorar el centenario de la independencia de EE.UU.",
+    "Las jirafas solo necesitan de 5 a 30 minutos de sueno al dia, pero lo hacen en pequenos periodos a lo largo de 24 horas.",
+    "Las serpientes pitones pueden pasar meses sin comer despues de un festin, digiriendo lentamente su presa.",
+    "Las aranas pueden crear hasta siete tipos diferentes de seda, cada una con propiedades especificas segun su uso.",
+    "Las bacterias representan el 90% de las celulas en el cuerpo humano, pero son esencialmente microorganismos beneficiosos.",
+    "La luz solar tarda alrededor de 8 minutos y 20 segundos en viajar desde el Sol hasta la superficie de la Tierra.",
+    "Las avestruces pueden correr a velocidades de hasta 70 km/h, convirtiendose en las aves mas rapidas en tierra.",
+    "El hielo seco es dioxido de carbono congelado, y se sublima directamente de solido a gas sin pasar por estado liquido.",
+    "El corazon de un raton late aproximadamente 500 veces por minuto, unas cinco veces mas rapido que el corazon humano.",
+    "El Mar Muerto es uno de los lugares mas salados de la Tierra, y su densidad hace que sea casi imposible hundirse.",
+    "Las mantarrayas tienen la capacidad de saltar fuera del agua, llegando a alturas de hasta dos metros en un espectaculo unico.",
+    "Los mapaches tienen manos tan habiles que pueden abrir cerraduras si tienen el tiempo y la motivacion suficientes.",
+    "El cerebro de un pulpo esta distribuido en todo su cuerpo, con dos tercios de sus neuronas localizadas en sus tentaculos.",
+    "Las estrellas mas grandes conocidas son las hipergigantes, como VY Canis Majoris, que podria contener miles de soles.",
+    "El chocolate blanco no es realmente chocolate, ya que no contiene solidos de cacao, sino manteca de cacao y leche.",
+    "Los cocodrilos no pueden sacar la lengua fuera de la boca porque esta adherida a la base de su mandibula.",
+    "Los castores usan sus colas planas como timones al nadar y como herramientas para advertir de peligros al golpear el agua.",
+    "Los diamantes son mas viejos que cualquier forma de vida en la Tierra; muchos se formaron hace mas de 3 mil millones de anos.",
+    "Los glaciares almacenan casi el 69% del agua dulce de la Tierra, y su derretimiento amenaza con elevar los niveles del mar.",
+    "Las serpientes cascabel cambian su sonaja cada vez que mudan la piel, anadiendo un nuevo segmento a su cola.",
+    "Las focas de Weddell pueden bucear hasta 600 metros y permanecer sumergidas durante mas de 80 minutos sin respirar.",
+    "Las luciernagas emiten luz fria mediante una reaccion quimica en su abdomen, conocida como bioluminiscencia.",
+    "Las hojas de los arboles cambian de color en otono debido a la reduccion de clorofila, lo que permite ver otros pigmentos.",
+    "Los volcanes mas activos se encuentran en el Cinturon de Fuego del Pacifico, donde las placas tectonicas convergen.",
+    "La Via Lactea tiene aproximadamente 100,000 anos luz de diametro y contiene al menos 100 mil millones de estrellas.",
+    "Las cigarras pueden permanecer bajo tierra hasta 17 anos antes de emerger en masa para reproducirse y completar su ciclo.",
+    "El pez piedra es uno de los mas venenosos del mundo; sus espinas pueden causar un dolor insoportable e incluso la muerte.",
+    "Las tortugas marinas hembras siempre regresan a la misma playa donde nacieron para desovar, aunque hayan viajado miles de kilometros.",
+    "Los pinguinos emperador pueden bucear hasta 500 metros de profundidad y contener la respiracion por mas de 20 minutos.",
+    "La orbita de Pluton es tan eliptica que, en ocasiones, esta mas cerca del Sol que el planeta Neptuno durante su recorrido."
+};
+
 string conseguirMensaje(int texto) {
     return textos[texto];
 }
 
+string conseguirPasajeDeLibro(int pasaje) {
+    return pasajesDeLibros[pasaje];
+}
+
 // ARREGLO Y FUNCION DE ARRIBA SE PASARAN A LIBRERIA
 
+// El color 'e' significa arbol
+//
+
+// Los primeros cuatro caracteres son la apariencia de la casilla, el quinto caracter determina si es pasable, el sexto caracter determina el color de la casilla
 unsigned char pantalla[altoDePantalla][anchoDePantalla][6] = {
 {{'+','-','|',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','-',' ',' ','0','a'},{'-','+',' ','|','0','a'}},
-{{'|',' ','|',' ','0','a'},{'/','\\','|','|','1','b'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','f'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{' ','|',' ','|','0','a'}},
+{{'|',' ','|',' ','0','a'},{'/','\\','|','|','1','b'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{' ','|',' ','|','0','a'}},
 {{'|',' ','|',' ','0','a'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{' ','|',' ','|','0','a'}},
-{{'|',' ','|',' ','0','a'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{' ','|',' ','|','0','a'}},
+{{'|',' ','|',' ','0','a'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{177,177,177,177,'0','e'},{100,225,'|','|','0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{' ','|',' ','|','0','a'}},
 {{'|',' ','|',' ','0','a'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{' ','|',' ','|','0','a'}},
 {{'|',' ','|',' ','0','a'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{' ','|',' ','|','0','a'}},
 {{'|',' ','|',' ','0','a'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{177,177,177,177,'0','e'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{219,219,219,219,'1','d'},{' ','|',' ','|','0','a'}},
@@ -102,7 +179,7 @@ unsigned char mapaActoTres[14][58][6] = {
 
 unsigned char estadoPrevioDeCasilla[5] = { ' ',' ',' ',' ',' '}; // Arreglo donde se guarda el estado de la casilla anterior
 unsigned char modeloDeJugador[5] = { '@','>','^',' ','p'}; // Arreglo del modelo del personaje
-int posicionJugadorX = 1, posicionJugadorY = 1; // Se establece la posicion inicial del personaje
+int posicionJugadorX = 2, posicionJugadorY = 1; // Se establece la posicion inicial del personaje
 
 void capturarEstadoPrevioDeCasilla() {
     // Almacena el estado visual actual de la casilla donde está el jugador
@@ -167,6 +244,17 @@ void imprimirMensaje(int lineaDeConsola, string mensaje, bool limpiar)
         }
     }
 }
+
+void interaccionArbol()
+{
+    if(pantalla[posicionJugadorX+1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX-1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY+1][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY-1][5] == 'e')
+    {
+        imprimirMensaje(1," ", true);
+        imprimirMensaje(2, " ", true);
+        imprimirMensaje(1,"Algo esta moviendose en el arbol...", false);
+        imprimirMensaje(2, "Presiona \"E\" para investigar", false);
+    }
+};
 
 // Funcion que dibuja al personaje en donde debe de estar
 void actualizarVisualJugador() {
@@ -294,6 +382,40 @@ void entradaUsuario() {
         imprimirMensaje(1, "Erace una vez", false);
         imprimirMensaje(3, "Diego kano kano kano kano kano kano kano kano kano kano kano kano", false);
         break;
+    case 'e':
+        if(pantalla[posicionJugadorX+1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX-1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY+1][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY-1][5] == 'e')
+        {
+            int numeroRandom = (rand() % 11);
+
+            if(numeroRandom == 1)
+            {
+                if(monedas < 3) {
+                    imprimirMensaje(1, " ", true);
+                    imprimirMensaje(1, " +1 monedas ", false);
+                    monedas = monedas + 1;
+                }
+                else
+                {
+                    imprimirMensaje(1, " ", true);
+                    imprimirMensaje(2, " ", true);
+                    imprimirMensaje(3, " ", true);
+                    imprimirMensaje(5, " ", true);
+                    imprimirMensaje(1, "APARECIO UN FANTASMA!", false);
+                    imprimirMensaje(2, "Matate....no la salves...", false);
+                    imprimirMensaje(3, "Desaparece el fantasma...", false);
+                    imprimirMensaje(5, "Ahora puedes acceder a la tienda de Alexito.", false);
+                    monedas = monedas + 1;
+                }
+
+            }
+            else
+            {
+                imprimirMensaje(1, " ", true);
+                imprimirMensaje(1, "Hay un muerto...", false);
+            }
+        }
+
+        break;
     }
 }
 
@@ -316,7 +438,7 @@ void imprimirHistoria(int etapaDeHistoria) {
         imprimirMensaje(3, conseguirMensaje(2), false);
         imprimirPantalla();
 
-        Sleep(10000);
+        Sleep(1000);
         system("cls");
 
         imprimirMensaje(1, " ", true);
@@ -326,7 +448,7 @@ void imprimirHistoria(int etapaDeHistoria) {
         imprimirMensaje(2, conseguirMensaje(4), false);
         imprimirPantalla();
 
-        Sleep(7000);
+        Sleep(700);
         system("cls");
 
         imprimirMensaje(1, " ", true);
@@ -335,7 +457,7 @@ void imprimirHistoria(int etapaDeHistoria) {
         imprimirMensaje(1, conseguirMensaje(5), false);
         imprimirPantalla();
 
-        Sleep(3000);
+        Sleep(300);
         system("cls");
 
         imprimirMensaje(0, " ", true);
@@ -364,12 +486,14 @@ int main()
     imprimirHistoria(-1);
     // Ciclo infinito para el mantenimiento del juego
     while (true) {
+        interaccionArbol();
         // Funcion para capturar el caracter ingresado por el usuario
         entradaUsuario();
         // Funcion para guardar la casilla antes de reescribirla
         capturarEstadoPrevioDeCasilla();
         // Funcion para mostrar al jugador en su casilla correspondiente
         actualizarVisualJugador();
+        // Funcion que checa si el jugador esta al lado de un arbol
         // Funcion de windows.h la cual limpia la consola para re-imprimir la pantalla
         system("cls");
         // Se vuelve a desplegar la pantalla
