@@ -36,6 +36,8 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="main.cpp" />
+		<Unit filename="textos.cpp" />
+		<Unit filename="textos.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
