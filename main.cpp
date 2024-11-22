@@ -300,6 +300,7 @@ void revisarCasillasCercanas()
 
 // Queremos mantener cierta informacion siempre visible al usuario, eso hace esta funcion
 void imprimirMensajesConstantes() {
+    // Limpiamos la mini consola
     imprimirMensaje(1, " ", true);
     imprimirMensaje(2, " ", true);
     imprimirMensaje(3, " ", true);
@@ -307,6 +308,7 @@ void imprimirMensajesConstantes() {
     imprimirMensaje(5, " ", true);
     imprimirMensaje(6, " ", true);
     imprimirMensaje(7, " ", true);
+    // Si el acto actual es el primero, entonces el jugador le sirve saber cuantas monedas tiene
     if (actoActual == 1) {
         imprimirMensaje(6, " ", true);
         // Usamos el metodo to_string para concatenar un integer con con los otros strings
@@ -516,7 +518,9 @@ void imprimirHistoria(int etapaDeHistoria) {
         imprimirMensaje(1, " ", true);
         break;
     case 1:
-        Sleep(9000);
+        system("cls");
+        imprimirPantalla();
+        Sleep(4000);
         system("cls");
 
         imprimirMensaje(1, " ", true);
@@ -540,6 +544,7 @@ void imprimirHistoria(int etapaDeHistoria) {
 
         imprimirMensaje(1, " ", true);
     }
+    imprimirPantalla();
 }
 
 // Procedimiento donde se captura lo ingresado por el usuario
@@ -550,42 +555,51 @@ void entradaUsuario() {
 
     // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d), u otros
     switch (caracterIngresado) {
+    // El jugador decide moverse hacia arriba
     case 'w':
         if (pantalla[posicionJugadorX - 1][posicionJugadorY][4] == '1') {
             // Se mueve de posicion al personaje
             posicionJugadorX--;
         }
         break;
+    // El jugador decide moverse a la izquierda
     case 'a':
         if (pantalla[posicionJugadorX][posicionJugadorY - 1][4] == '1') {
             posicionJugadorY--;
         }
         break;
+    // El jugador decide moverse hacia abajo
     case 's':
         if (pantalla[posicionJugadorX + 1][posicionJugadorY][4] == '1') {
             posicionJugadorX++;
         }
         break;
+    // El jugador decide moverse a la derecha
     case 'd':
         if (pantalla[posicionJugadorX][posicionJugadorY + 1][4] == '1') {
             posicionJugadorY++;
         }
         break;
+    // Tecla debugging de imprimirMensaje "easter egg"
     case 'i':
         imprimirMensaje(1, " ", true);
+        imprimirMensaje(2, " ", true);
+        imprimirMensaje(3, " ", true);
+        imprimirMensaje(4, " ", true);
         break;
-    // Tecla debugging de imprimirMensaje
+    // Tecla debugging de imprimirMensaje "easter egg"
     case 'l':
         imprimirMensaje(2, "Bienvenido a Farlan", false);
-        imprimirMensaje(0, "Mensaje test", false);
+        imprimirMensaje(4, "Mensaje test", false);
         imprimirMensaje(1, "Erace una vez", false);
         imprimirMensaje(3, "Diego kano kano kano kano kano kano kano kano kano kano kano kano", false);
         break;
-    // Interaccion
+    // El jugador decide interactuar
     case 'e':
         // Si el jugador interactua, y la casilla cercana es un arbol, entonces haz lo siguiente...
         if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'e')
         {
+            interactuandoConArbol = true;
             // Conseguimos un numero al azar del 0 al 9
             int numeroRandom = (rand() % 10);
 
@@ -598,7 +612,7 @@ void entradaUsuario() {
                     imprimirMensaje(1, "Encontraste una moneda!!!", false);
                     monedas = monedas + 1;
                 }
-                // Si ya tiene tres monedas y encuentra una cuarta, entonces presentar que ya es posible
+                // Si ya tiene tres monedas y encuentra una cuarta, entonces presentar que ya es posible pedir la ayuda de Alexito
                 else
                 {
                     imprimirMensaje(1, " ", true);
@@ -666,9 +680,10 @@ void entradaUsuario() {
                 imprimirMensaje(2, " ", true);
                 imprimirMensaje(2, "PLACEHOLDER ALEXITO YAPPING", false);
                 imprimirMensaje(3, " ", false);
-                imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING", false);
+                imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING puedes progresar", false);
                 imprimirHistoria(1);
                 alexitoDesbloqueado = true;
+                cambiarEstadoDeCasilla(9, 59, '%', '%', '%', '%', 1, 'b');
                 monedas = 0;
             // Si aun no tiene mas de tres monedas
             } else {
@@ -699,6 +714,12 @@ int main()
     // Empieza la primera etapa de la historia
     imprimirHistoria(etapaDeHistoria);
     etapaDeHistoria++;
+
+    // Pequena pausa antes de imprimir las instrucciones despues de la historia
+    Sleep(2000);
+    revisarCasillasCercanas();
+    system("cls");
+    imprimirPantalla();
 
     // Ciclo infinito para el mantenimiento del juego
     while (true) {

@@ -88,10 +88,12 @@ string pasajesDeLibros[60] = {
     "La orbita de Pluton es tan eliptica que a veces esta mas cerca del Sol que el planeta Neptuno durante su recorrido."
 };
 
+// Funcion que regresa el mensaje elegido
 string conseguirMensaje(int texto) {
     return textos[texto];
 }
 
+// Funcion que regresa el pasaje elegido
 string conseguirPasajeDeLibro(int pasaje) {
     return pasajesDeLibros[pasaje];
 }
