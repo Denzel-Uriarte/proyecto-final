@@ -38,6 +38,8 @@ bool cercaDePuertaCodigo = false;
 bool alexitoDesbloqueado = false;
 
 bool interactuandoConCasaAlexito = false;
+bool interactuandoConArbol = false;
+bool interactuandoConLibreria = false;
 
 // Estructura de casilla dentro del arrelo:
 // Los primeros cuatro caracteres van a ser los que se imprimiran a consola
@@ -165,6 +167,7 @@ unsigned char mapaActoTres[14][58][6] = {
 
 void capturarEstadoPrevioDeCasilla() {
     // Almacena el estado visual actual de la casilla donde está el jugador
+    // En la secuencia de las funciones esto ocurre antes de actualizar la casilla a que t/;'ome el modelo del jugador, por eso funciona.
     estadoPrevioDeCasilla[0] = pantalla[posicionJugadorX][posicionJugadorY][0];
     estadoPrevioDeCasilla[1] = pantalla[posicionJugadorX][posicionJugadorY][1];
     estadoPrevioDeCasilla[2] = pantalla[posicionJugadorX][posicionJugadorY][2];
@@ -241,15 +244,22 @@ void imprimirMensaje(int lineaDeConsola, string mensaje, bool limpiar)
 // Funcion que revisa si hay alguna casilla cercana interactuable y lo imprime a la consola
 void revisarCasillasCercanas()
 {
+    // Si el jugador esta al lado de una casilla con el color 'e' (color asignado a los arboles), entonces...
     if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'e')
     {
-        if (cercaDeArbol == false) {
+        if (interactuandoConArbol) {
+            // Terminamos la interaccion con el arbol
+            interactuandoConArbol = false;
+        // Si el jugador no esta interactuando con el arbol, entonces presenta la opcion de interactuar
+        } else {
             imprimirMensaje(1, " ", true);
             imprimirMensaje(2, " ", true);
             imprimirMensaje(1, "Algo esta moviendose en el arbol...", false);
             imprimirMensaje(2, "Presiona \"E\" para investigar", false);
         }
         cercaDeArbol = true;
+
+    // Funcionamiento igual al del arbol, revisa si una casilla cercana es del color asignado a los libreros
     } else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'h' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'h' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'h' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'h') {
         if (cercaDeLibreria == false) {
             imprimirMensaje(1, " ", true);
@@ -258,11 +268,12 @@ void revisarCasillasCercanas()
             imprimirMensaje(2, "Presiona \"E\" para investigar", false);
         }
         cercaDeLibreria = true;
+
+    // Funcionamiento igual al arbol, revisa si una casilla cercana es del color asignado a la casa de Alexito
     } else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'k' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'k' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'k' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'k') {
         if (interactuandoConCasaAlexito) {
             // Terminamos la interaccion con la casa de Alexito
-            interactuandoConCasaAlexito = false
-
+            interactuandoConCasaAlexito = false;
         } else if (alexitoDesbloqueado) {
             imprimirMensaje(1, " ", true);
             imprimirMensaje(2, " ", true);
@@ -275,6 +286,8 @@ void revisarCasillasCercanas()
             imprimirMensaje(2, "Presiona \"E\" para investigar", false);
         }
         cercaDeCasaAlexito = true;
+
+    // Si no hay ninguna casilla cercana relevante, entonces solo imprime instrucciones basicas
     } else {
         imprimirMensaje(1, " ", true);
         imprimirMensaje(2, " ", true);
@@ -285,6 +298,7 @@ void revisarCasillasCercanas()
     }
 };
 
+// Queremos mantener cierta informacion siempre visible al usuario, eso hace esta funcion
 void imprimirMensajesConstantes() {
     imprimirMensaje(1, " ", true);
     imprimirMensaje(2, " ", true);
@@ -295,7 +309,10 @@ void imprimirMensajesConstantes() {
     imprimirMensaje(7, " ", true);
     if (actoActual == 1) {
         imprimirMensaje(6, " ", true);
+        // Usamos el metodo to_string para concatenar un integer con con los otros strings
         imprimirMensaje(6, ("Tienes " + to_string(monedas) + " monedas"), false);
+
+        // Si el jugador ya tiene suficientes monedas, recordarle que ya puede consultar a Alexito
         if (monedas > 3) {
             imprimirMensaje(7, " ", true);
             imprimirMensaje(7, "Puedes comprar los servicios de Alexito.", false);
@@ -382,6 +399,7 @@ string colores(unsigned char color) {
     }
 }
 
+// Funcion para asignar el color de fondo de las casillas
 string colorFondo(unsigned char color) {
 
     //Los colores se aplican usando secuencias de esc
@@ -459,15 +477,21 @@ void imprimirPantalla() {
     }
 }
 
+// Funcion que imprime la historia a la mini consola
 void imprimirHistoria(int etapaDeHistoria) {
+    // Dependiendo en la etapa de historia en la que se este, sera la parte de la misma que se imprimira
     switch (etapaDeHistoria) {
     case 0:
+        // Colocamos texto en la mini consola
         imprimirMensaje(1, conseguirMensaje(0), false);
         imprimirMensaje(2, conseguirMensaje(1), false);
         imprimirMensaje(3, conseguirMensaje(2), false);
+
+        // Imprimimos los textos puestos en pantalla
         imprimirPantalla();
 
-        Sleep(1000);
+        // Le damos diez segundos al usuario para leer lo puesto
+        Sleep(10000);
         system("cls");
 
         imprimirMensaje(1, " ", true);
@@ -477,7 +501,7 @@ void imprimirHistoria(int etapaDeHistoria) {
         imprimirMensaje(2, conseguirMensaje(4), false);
         imprimirPantalla();
 
-        Sleep(700);
+        Sleep(7000);
         system("cls");
 
         imprimirMensaje(1, " ", true);
@@ -486,7 +510,7 @@ void imprimirHistoria(int etapaDeHistoria) {
         imprimirMensaje(1, conseguirMensaje(5), false);
         imprimirPantalla();
 
-        Sleep(300);
+        Sleep(3000);
         system("cls");
 
         imprimirMensaje(1, " ", true);
@@ -516,8 +540,6 @@ void imprimirHistoria(int etapaDeHistoria) {
 
         imprimirMensaje(1, " ", true);
     }
-    revisarCasillasCercanas();
-    imprimirPantalla();
 }
 
 // Procedimiento donde se captura lo ingresado por el usuario
@@ -526,7 +548,7 @@ void entradaUsuario() {
     // Se manda a llamar la funcion para guardar la casilla
     actualizarEstadoPrevioDeCasilla();
 
-    // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d)
+    // Switch que decide lo que se hara en base a inputs de movimiento (w, a, s, d), u otros
     switch (caracterIngresado) {
     case 'w':
         if (pantalla[posicionJugadorX - 1][posicionJugadorY][4] == '1') {
@@ -552,24 +574,31 @@ void entradaUsuario() {
     case 'i':
         imprimirMensaje(1, " ", true);
         break;
+    // Tecla debugging de imprimirMensaje
     case 'l':
         imprimirMensaje(2, "Bienvenido a Farlan", false);
         imprimirMensaje(0, "Mensaje test", false);
         imprimirMensaje(1, "Erace una vez", false);
         imprimirMensaje(3, "Diego kano kano kano kano kano kano kano kano kano kano kano kano", false);
         break;
+    // Interaccion
     case 'e':
+        // Si el jugador interactua, y la casilla cercana es un arbol, entonces haz lo siguiente...
         if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'e' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'e')
         {
+            // Conseguimos un numero al azar del 0 al 9
             int numeroRandom = (rand() % 10);
 
+            // Con una probablidad de uno en diez, damos una moneda
             if (numeroRandom == 1)
             {
+                // Si aun no tiene las tres monedas, solo presentar moneda
                 if (monedas < 3) {
                     imprimirMensaje(1, " ", true);
                     imprimirMensaje(1, "Encontraste una moneda!!!", false);
                     monedas = monedas + 1;
                 }
+                // Si ya tiene tres monedas y encuentra una cuarta, entonces presentar que ya es posible
                 else
                 {
                     imprimirMensaje(1, " ", true);
@@ -585,6 +614,7 @@ void entradaUsuario() {
             }
             else
             {
+                // Almacenamos los diez posibles mensajes para un muerto
                 string mensajes[10] = {
                     "Aparecio un muerto... pero no encontraste nada util en el arbol",
                     "Este es un mensaje imposible de obtener.",
@@ -598,10 +628,13 @@ void entradaUsuario() {
                     "Diegogo sale corriendo detras del arbol!!, pero no encontraste nada util.",
                 };
 
+                // Imprimimos el mensaje al azar
                 imprimirMensaje(1, " ", true);
                 imprimirMensaje(1, mensajes[numeroRandom], false);
             }
+        // Checamos si una casilla cerca del jugador del color de un librero, entonces...
         } else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'h' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'h' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'h' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'h') {
+            // Elegimos uno de doce posibles libros a imprimir
             int numeroRandom = (rand() % 12) * 5;
             imprimirMensaje(1, " ", true);
             imprimirMensaje(1, conseguirPasajeDeLibro(numeroRandom), false);
@@ -613,8 +646,12 @@ void entradaUsuario() {
             imprimirMensaje(4, conseguirPasajeDeLibro(numeroRandom+3), false);
             imprimirMensaje(5, " ", true);
             imprimirMensaje(5, conseguirPasajeDeLibro(numeroRandom+4), false);
+
+        // Si una de las casillas cercanas al jugador es del color de la casa de Alexito, entonces...
         } else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'k' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'k' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'k' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'k') {
+            // Senalamos que el jugador esta interactuando con la casa de Alexito para que el mensaje de interactuar no aparezca
             interactuandoConCasaAlexito = true;
+            // Si ya interactuamos con alexito una vez que le dimos las monedas, entonces...
             if (alexitoDesbloqueado) {
                 imprimirMensaje(1, " ", true);
                 imprimirMensaje(1, "Estoy desbloqueado!", false);
@@ -622,6 +659,7 @@ void entradaUsuario() {
                 imprimirMensaje(2, "PLACEHOLDER ALEXITO YAPPING", false);
                 imprimirMensaje(3, " ", true);
                 imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING", false);
+            // Si el jugador ya tiene mas de tres monedas, desbloquear a Alexito
             } else if (monedas > 3) {
                 imprimirMensaje(1, " ", true);
                 imprimirMensaje(1, "Tienes 3 monedas!", false);
@@ -631,6 +669,8 @@ void entradaUsuario() {
                 imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING", false);
                 imprimirHistoria(1);
                 alexitoDesbloqueado = true;
+                monedas = 0;
+            // Si aun no tiene mas de tres monedas
             } else {
                 imprimirMensaje(1, " ", true);
                 imprimirMensaje(1, "Eres pobre, vuelve luego", false);
