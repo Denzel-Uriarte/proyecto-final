@@ -35,11 +35,13 @@ bool cercaDeArbol = false;
 bool cercaDeLibreria = false;
 bool cercaDeCasaAlexito = false;
 bool cercaDePuertaCodigo = false;
+bool cercaDePortal = false;
 bool alexitoDesbloqueado = false;
 
 bool interactuandoConCasaAlexito = false;
 bool interactuandoConArbol = false;
 bool interactuandoConLibreria = false;
+bool interactuandoConPortal = false;
 
 // Estructura de casilla dentro del arrelo:
 // Los primeros cuatro caracteres van a ser los que se imprimiran a consola
@@ -307,6 +309,23 @@ void revisarCasillasCercanas()
         cercaDeCasaAlexito = true;
 
         // Si no hay ninguna casilla cercana relevante, entonces solo imprime instrucciones basicas
+    }
+    if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'z')
+    {
+        if (interactuandoConPortal) {
+            // Terminamos la interaccion con el portal
+            interactuandoConPortal = false;
+            // Si el jugador no esta interactuando con el portal, entonces presenta la opcion de interactuar
+        }
+        else {
+            imprimirMensaje(1, " ", true);
+            imprimirMensaje(2, " ", true);
+            imprimirMensaje(1, "Ves una libreria a lo lejos", false);
+            imprimirMensaje(2, "Presiona \"E\" para viajar", false);
+        }
+        cercaDePortal = true;
+
+        // Funcionamiento igual al del arbol, revisa si una casilla cercana es del color asignado a los libreros
     }
     else {
         imprimirMensaje(1, " ", true);
@@ -765,6 +784,9 @@ void entradaUsuario() {
         }
         else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'z') {
             cambioPantalla(2);
+            cambiarEstadoDeCasilla(9, 59, ' ', 179, ' ', 179, 0, 'a');
+            posicionJugadorX = 1;
+            posicionJugadorY = 1;
             break;
         }
     /*
