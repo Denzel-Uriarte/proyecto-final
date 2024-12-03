@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1732299458 source:c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\main.cpp
+1733174760 source:c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\main.cpp
 	<iostream>
 	<windows.h>
 	<conio.h>
@@ -16,7 +16,7 @@
 1732296947 c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\textos.h
 	<string>
 
-1732299032 source:c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\textos.cpp
+1733175174 source:c:\users\denze\onedrive\documents\code-folder\education\uni-primer-semestre\proyecto-final\proyecto-final\textos.cpp
 	<string>
 	"textos.h"
 

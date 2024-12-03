@@ -6,9 +6,6 @@
 #include "textos.h"
 
 
-
-// #include "mensajes.hpp"
-
 // Alto del display: 40 characteres
 // Ancho del display: 120 characters
 
@@ -23,71 +20,28 @@ using namespace std;
 const int anchoDePantalla = 60; //Ancho
 const int altoDePantalla = 20; //Alto
 
-unsigned char estadoPrevioDeCasilla[5] = { ' ',' ',' ',' ',' ' }; // Arreglo donde se guarda el estado de la casilla anterior
-unsigned char modeloDeJugador[5] = { '@','>','^',' ','p' }; // Arreglo del modelo del personaje
-
 int posicionJugadorX = 2, posicionJugadorY = 1; // Se establece la posicion inicial del personaje
 int monedas = 0;
 int librosLeidos = 0;
 int actoActual = 1;
+int etapaDeHistoria = 0;
+
+unsigned char estadoPrevioDeCasilla[5] = { ' ',' ',' ',' ',' ' }; // Arreglo donde se guarda el estado de la casilla anterior
+unsigned char modeloDeJugador[5] = { '@','>','^',' ','p' }; // Arreglo del modelo del personaje
 
 bool cercaDeArbol = false;
 bool cercaDeLibreria = false;
 bool cercaDeCasaAlexito = false;
-bool cercaDePuertaCodigo = false;
 bool cercaDePortal = false;
-bool alexitoDesbloqueado = false;
+bool cercaDeTecladoNumerico = false;
 
 bool interactuandoConCasaAlexito = false;
 bool interactuandoConArbol = false;
 bool interactuandoConLibreria = false;
 bool interactuandoConPortal = false;
+bool interactuandoConTecladoNumerico = false;
 
-// Estructura de casilla dentro del arrelo:
-// Los primeros cuatro caracteres van a ser los que se imprimiran a consola
-
-// Tipos de casillas:
-// 'a' Casilla de inicio
-// 'b' Casilla vacia (pasto)
-// 'c'
-
-// Es pasable?
-// '0': no
-// '1': si
-
-
-// {'+','-','|',' ','0'} se imprime como:
-// +-
-// |
-
-// ESTO SE PASARA A LIBRERIA
-
-
-
-// ARREGLO Y FUNCION DE ARRIBA SE PASARAN A LIBRERIA
-
-// El color 'e' significa arbol
-/*
-
-
-    ░▒░▒░`'::::.░▒░▒░▒
-    ▒░▒░▒_____A_▒░▒░▒░
-    ░▒░▒/▒░▒░▒░/\▒░▒░▒
-    ▒__/__/\__/░▒\___░
-    /__|"▒''░"|▒/___/\
-    |''|"'||'"|░|'░'||
-    `""`""))""`"`""""`
-    ▒░▒░▒░▒░▒░▒░▒░▒░▒░
-
-    9x4
-
-
-*/
-
-
-
-
-
+bool alexitoDesbloqueado = false;
 
 // Los primeros cuatro caracteres son la apariencia de la casilla, el quinto caracter determina si es pasable, el sexto caracter determina el color de la casilla
 unsigned char pantalla[altoDePantalla][anchoDePantalla][6] = {
@@ -129,7 +83,6 @@ unsigned char mapaActoUno[14][58][6] = {
 {{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{178,178,178,178,'1','c'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ',' ','_','0','l'},{' ',' ','_','/','0','k'},{'/',' ','_','_','0','k'},{' ',' ','/','\\','0','k'},{' ',' ','_','_','0','k'},{' ','/','/',' ','0','k'},{'\\',' ','\\',' ','0','k'},{' ',' ','_','_','0','l'},{' ',' ','_',' ','0','l'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'}},
 {{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{'/','_','|','\'','0','k'},{'_','|','\'','|','0','k'},{'"',' ','"','\'','0','k'},{'\'','\'','|','|','0','k'},{' ','"','\'','"','0','k'},{'|',' ','|',' ','0','k'},{'/','_','|','\'','0','k'},{'_','_',' ','\'','0','k'},{'/','\\','|','"','0','k'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'}},
 {{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{'`','"',' ',' ','1','j'},{'"','`',' ',' ','1','j'},{'"','"',' ',' ','1','j'},{')',')',' ',' ','1','j'},{'"','"',' ',' ','1','j'},{'`','"',' ',' ','1','j'},{'`','"',' ',' ','1','j'},{'"','"',' ',' ','1','j'},{'"','`',' ',' ','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'},{' ',' ','"','"','1','j'}},
-
 };
 
 
@@ -165,6 +118,7 @@ void cambioPantalla(int mapa) {
                 pantalla[i][j][5] = mapaActoUno[i - 1][j - 1][5];
             }
         }
+        actoActual = 2;
     }
     else if (mapa == 2) {
         for (int i = 1; i < 15; i++) {
@@ -178,6 +132,7 @@ void cambioPantalla(int mapa) {
                 pantalla[i][j][5] = mapaActoDos[i - 1][j - 1][5];
             }
         }
+        actoActual = 1;
     }
 }
 
@@ -274,18 +229,18 @@ void revisarCasillasCercanas()
             imprimirMensaje(1, "Algo esta moviendose en el arbol...", false);
             imprimirMensaje(2, "Presiona \"E\" para investigar", false);
         }
-        cercaDeArbol = true;
 
         // Funcionamiento igual al del arbol, revisa si una casilla cercana es del color asignado a los libreros
     }
     else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'h' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'h' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'h' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'h') {
-        if (cercaDeLibreria == false) {
+        if (interactuandoConLibreria) {
+            interactuandoConLibreria = false;
+        } else {
             imprimirMensaje(1, " ", true);
             imprimirMensaje(2, " ", true);
             imprimirMensaje(1, "Puedes leer un libro...", false);
             imprimirMensaje(2, "Presiona \"E\" para investigar", false);
         }
-        cercaDeLibreria = true;
 
         // Funcionamiento igual al arbol, revisa si una casilla cercana es del color asignado a la casa de Alexito
     }
@@ -306,11 +261,10 @@ void revisarCasillasCercanas()
             imprimirMensaje(1, "Parece ser una casa, vez a una silhueta adentro...", false);
             imprimirMensaje(2, "Presiona \"E\" para investigar", false);
         }
-        cercaDeCasaAlexito = true;
 
         // Si no hay ninguna casilla cercana relevante, entonces solo imprime instrucciones basicas
     }
-    if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'z')
+    else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'z')
     {
         if (interactuandoConPortal) {
             // Terminamos la interaccion con el portal
@@ -324,9 +278,23 @@ void revisarCasillasCercanas()
             imprimirMensaje(2, "Presiona \"E\" para viajar", false);
         }
         cercaDePortal = true;
-
-        // Funcionamiento igual al del arbol, revisa si una casilla cercana es del color asignado a los libreros
     }
+    else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'z')
+    {
+        if (interactuandoConPortal) {
+            // Terminamos la interaccion con el portal
+            interactuandoConPortal = false;
+            // Si el jugador no esta interactuando con el portal, entonces presenta la opcion de interactuar
+        }
+        else {
+            imprimirMensaje(1, " ", true);
+            imprimirMensaje(2, " ", true);
+            imprimirMensaje(1, "Ves una libreria a lo lejos", false);
+            imprimirMensaje(2, "Presiona \"E\" para viajar", false);
+        }
+        cercaDePortal = true;
+    }
+        // Si no hay ninguna casilla cercana relevante, entonces solo imprime instrucciones basicas
     else {
         imprimirMensaje(1, " ", true);
         imprimirMensaje(2, " ", true);
@@ -334,6 +302,7 @@ void revisarCasillasCercanas()
         cercaDeArbol = false;
         cercaDeLibreria = false;
         cercaDeCasaAlexito = false;
+        cercaDeTecladoNumerico = false;
     }
 };
 
@@ -354,7 +323,7 @@ void imprimirMensajesConstantes() {
         imprimirMensaje(6, ("Tienes " + to_string(monedas) + " monedas"), false);
 
         // Si el jugador ya tiene suficientes monedas, recordarle que ya puede consultar a Alexito
-        if (monedas > 3) {
+        if (monedas > 3 && alexitoDesbloqueado == false) {
             imprimirMensaje(7, " ", true);
             imprimirMensaje(7, "Puedes comprar los servicios de Alexito.", false);
         }
@@ -377,7 +346,7 @@ void actualizarVisualJugador() {
 // Funcion para cambiar el color del texto.
 string colores(unsigned char color) {
 
-    //Los colores se aplican usando secuencias de esc 
+    //Los colores se aplican usando secuencias de esc
     //Syntax:
     // \x1b[38;2;[r];[g];[b]m
     // \x1b es el codigo hexadecimal para el comando esc
@@ -466,7 +435,7 @@ string colores(unsigned char color) {
 // Funcion para asignar el color de fondo de las casillas
 string colorFondo(unsigned char color) {
 
-    //Los colores se aplican usando secuencias de esc 
+    //Los colores se aplican usando secuencias de esc
     //Syntax:
     // \x1b[48;2;[r];[g];[b]m
     // \x1b es el codigo hexadecimal para el comando esc
@@ -626,7 +595,36 @@ void imprimirHistoria(int etapaDeHistoria) {
         system("cls");
 
         imprimirMensaje(1, " ", true);
+        break;
+    case 2:
+        system("cls");
+        imprimirPantalla();
+        Sleep(4000);
+        system("cls");
+
+        imprimirMensaje(1, " ", true);
+        imprimirMensaje(2, " ", true);
+        imprimirMensaje(3, " ", true);
+        imprimirMensaje(1, "PLACEHOLDER HISTORIA", false);
+        imprimirMensaje(2, "PLACEHOLDER HISTORIA", false);
+        imprimirPantalla();
+
+        Sleep(7000);
+        system("cls");
+
+        imprimirMensaje(1, " ", true);
+        imprimirMensaje(2, " ", true);
+        imprimirMensaje(3, " ", true);
+        imprimirMensaje(1, "PLACEHOLDER HISTORIA", false);
+        imprimirPantalla();
+
+        Sleep(3000);
+        system("cls");
+
+        imprimirMensaje(1, " ", true);
+        break;
     }
+    revisarCasillasCercanas();
     imprimirPantalla();
 }
 
@@ -727,7 +725,9 @@ void entradaUsuario() {
 
                 // Imprimimos el mensaje al azar
                 imprimirMensaje(1, " ", true);
+                imprimirMensaje(2, " ", true);
                 imprimirMensaje(1, mensajes[numeroRandom], false);
+                imprimirMensaje(2, "Presiona \"E\" para seguir investigando", false);
             }
             // Checamos si una casilla cerca del jugador del color de un librero, entonces...
         }
@@ -753,42 +753,41 @@ void entradaUsuario() {
             // Si ya interactuamos con alexito una vez que le dimos las monedas, entonces...
             if (alexitoDesbloqueado) {
                 imprimirMensaje(1, " ", true);
-                imprimirMensaje(1, "Estoy desbloqueado!", false);
+                imprimirMensaje(1, "Que esperas!?", false);
                 imprimirMensaje(2, " ", false);
-                imprimirMensaje(2, "PLACEHOLDER ALEXITO YAPPING", false);
+                imprimirMensaje(2, "Estoy listo para irnos a Lodric", false);
                 imprimirMensaje(3, " ", true);
-                imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING", false);
+                imprimirMensaje(3, "Continua el camino.", false);
                 // Si el jugador ya tiene mas de tres monedas, desbloquear a Alexito
             }
             else if (monedas > 3) {
                 imprimirMensaje(1, " ", true);
-                imprimirMensaje(1, "Tienes 3 monedas!", false);
+                imprimirMensaje(1, "Las conseguiste!", false);
                 imprimirMensaje(2, " ", true);
-                imprimirMensaje(2, "PLACEHOLDER ALEXITO YAPPING", false);
-                imprimirMensaje(3, " ", false);
-                imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING puedes progresar", false);
-                imprimirHistoria(1);
+                imprimirMensaje(2, "Damelas gracias gracias, ahorita empaco mis cosas y nos vamos", false);
                 alexitoDesbloqueado = true;
-                cambiarEstadoDeCasilla(9, 59, '%', '%', '%', '%', 1, 'z');
+                cambiarEstadoDeCasilla(9, 59, '%', '%', '%', '%', 0, 'z');
                 monedas = 0;
+                imprimirHistoria(1);
                 // Si aun no tiene mas de tres monedas
             }
             else {
                 imprimirMensaje(1, " ", true);
-                imprimirMensaje(1, "Eres pobre, vuelve luego", false);
+                imprimirMensaje(1, "Hola! Gran hombre como estas? mi nombre es Alexito y el tuyo?", false);
                 imprimirMensaje(2, " ", true);
-                imprimirMensaje(2, "PLACEHOLDER ALEXITO YAPPING", false);
+                imprimirMensaje(2, "Voy a otra region llama Lodric, veo que eres Sutir, tienes prisa?", false);
                 imprimirMensaje(3, " ", true);
-                imprimirMensaje(3, "PLACEHOLDER ALEXITO YAPPING", false);
+                imprimirMensaje(3, "Quiero algo a cambio de llevarte a Lodric, traeme cuatro monedas y tenemos un trato.", false);
             }
         }
         else if (pantalla[posicionJugadorX + 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX - 1][posicionJugadorY][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY + 1][5] == 'z' || pantalla[posicionJugadorX][posicionJugadorY - 1][5] == 'z') {
             cambioPantalla(2);
-            cambiarEstadoDeCasilla(9, 59, ' ', 179, ' ', 179, 0, 'a');
+            cambiarEstadoDeCasilla(9, 59, ' ', 179, ' ', 179, 0, 'z');
             posicionJugadorX = 1;
             posicionJugadorY = 1;
-            break;
         }
+        break;
+
     /*
     case 'v':
         cambioPantalla(1);
@@ -800,18 +799,13 @@ void entradaUsuario() {
         cambioPantalla(3);
         break;
     */
-        break;
     }
-    
+
 }
 
 // Empieza la funcion principal
 int main()
 {
-    int etapaDeHistoria = 0;
-    // Funcion para guardar el visual de la casilla antes de reescribirla
-    capturarEstadoPrevioDeCasilla();
-
     // Funcion para mostrar al jugador en su casilla correspondiente
     actualizarVisualJugador();
 
@@ -820,7 +814,7 @@ int main()
     etapaDeHistoria++;
 
     // Pequena pausa antes de imprimir las instrucciones despues de la historia
-    Sleep(2000);
+    Sleep(1000);
     revisarCasillasCercanas();
     system("cls");
     imprimirPantalla();
