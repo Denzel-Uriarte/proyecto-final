@@ -4,7 +4,7 @@
 using namespace std;
 
 
-string textos[20] = {
+string textos[] = {
     "Farlan, 1342, un rey obsesionado con el poder de una bella dama que transformaba todo en oro,",        // 0
     "esa joven dama se llamaba Alei, una dama que fue desechada de su pueblo por tener poderes misticos,",  // 1
     "otorgados por el sabio y todo poderoso Dios.",                                                         // 2
@@ -20,7 +20,28 @@ string textos[20] = {
     "torturandolos a tal punto de desear su muerte, almas blancas y puras ahora perdidas y oscuras, llorando", // 12
     "por los pasillos de la libreria, si te atrapan, seras torturado con cada memoria de tortura del ser",  // 13
     "y lo viviras en persona hasta morir en solamente 0.98 milisegundos.",                                  // 14
-    "Usa las teclas W A S D para moverte."                                                                  // 15
+    "Usa las teclas W A S D para moverte.",                                                                 // 15
+    "Alexito: Emm... Cual es el plan?",                                                                     // 16
+    "Yanis: Como q plan? unas chelas o que? si vamos a rescatar a Alei, se que puedo salvarla.",            // 17
+    "Alexito: Ya hablaste con ella? Te pidio que la rescataras?",                                           // 18
+    "Yanis: No directamente, pero se que lo necesita. Es mi destino.",                                      // 19
+    "Alexito: Y si no quiere ser rescatada? Y si esta bien alla?",                                          // 20
+    "Alexito: No te da miedo convertirte en un heroe no solicitado? Nadie quiere ser ese tipo, Yanis.",     // 21
+    "Yanis: Insinuas que no debo ser un valiente guerrero por alguien mas?",                                // 22
+    "Alexito: Exacto. No sacrifiques quien eres solo por cumplir las expectativas de alguien mas.",         // 23
+    "Alexito: Echale coco, mi buen Yanis. (Susurra: como que te falla no?)",                                // 24
+    "Yanis: Tienes razon, Alexito...",                                                                      // 25
+    "Alexito: Me alegra que lo entiendas. Ahora, NOS PODEMOS MOVER YA? Minimo ya me pagaste...",            // 26
+    "Yanis: Pero aun asi voy a salvarla! Sabias que Alei es increible? Ella tiene esa risa como un canto de angeles.",  // 27
+    "Yanis: Y su cabello, ¡es como si el sol le pidiera permiso para brillar mas cuando la ve!",                        // 28
+    "Yanis: Ah y ni te cuento como hace esos pastelitos de arandano, cada bocado es una explosion de sabores.",         // 29
+    "Alexito: (Ojos en blanco) Que sorpresa, calla y camina",                                               // 30
+    "Yanis: Yanis: Te mencione sobre sus pastelitos de chocolate? Son explosiones de felicidad.",           // 31
+    "Alexito: La boca te voy a venir explotando si sigues hablando",                                        // 32
+    "Yanis: Ya ya perdon, Pero es que su cabello, y sus ojos...!",                                          // 33
+    "Alexito: Dios santo...",                                                                               // 34
+
+
 };
 
 string pasajesDeLibros[60] = {
